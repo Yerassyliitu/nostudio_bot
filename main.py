@@ -108,14 +108,14 @@ async def process_name(message: Message, state: FSMContext):
 async def process_project_name(message: Message, state: FSMContext):
     await state.update_data(project_name=message.text)
     await state.set_state(OrderForm.messenger_type)
-    await message.answer("💬 Выберите тип мессенджера:", reply_markup=messenger_types_keyboard)
+    await message.answer("💬 Пожалуйста, выберите тип мессенджера, через который мы будем с вами связываться. Используйте предложенные варианты.", reply_markup=messenger_types_keyboard)
 
 # Получаем messenger_type
 @dp.message(OrderForm.messenger_type)
 async def process_messenger_type(message: Message, state: FSMContext):
     selected_messenger = next((mt for mt in messenger_types if mt['name'] == message.text), None)
     if not selected_messenger:
-        await message.answer("⚠️ Пожалуйста, выберите тип мессенджера, через который мы будем с вами связываться. Используйте предложенные варианты.")
+        await message.answer("⚠️ Пожалуйста, выберите тип мессенджера, используя предложенные варианты.")
         return
     await state.update_data(messenger_type=selected_messenger['id'])
     await state.set_state(OrderForm.contact)
